@@ -28,13 +28,14 @@ deleteButton.addEventListener('click', del);
 
 function inputNumber(n){
     equalButton.addEventListener('click', operate);
+    deleteButton.addEventListener('click', del);
     if(firstOperator==true){
         if(decimalActive == false){
             if(firstTerm!=0) firstTerm = firstTerm + n.target.getAttribute("data-key");
             else firstTerm =  n.target.getAttribute("data-key"); 
             inputBox.textContent = firstTerm;
         }else{
-            firstTerm = firstTerm + "." + n.target.getAttribute("data-key");
+            firstTerm = firstTerm + n.target.getAttribute("data-key");
             decimalActive = false;
             inputBox.textContent = firstTerm;
 
@@ -46,7 +47,7 @@ function inputNumber(n){
             secondTerm = secondTerm + n.target.getAttribute("data-key");
             inputBox.textContent = secondTerm;
         }else{
-            secondTerm = secondTerm + "." + n.target.getAttribute("data-key");
+            secondTerm = secondTerm + n.target.getAttribute("data-key");
             decimalActive = false;
             inputBox.textContent = secondTerm;
 
@@ -98,6 +99,7 @@ function inputOperator(operator){
 
 function operate(){
     equalButton.removeEventListener('click', operate);
+    deleteButton.removeEventListener('click', del);
     switch(currentOperator){
         case '+':
             firstTerm = add(Number(firstTerm), Number(secondTerm));
@@ -120,7 +122,7 @@ function operate(){
             resultField.textContent = firstTerm;
   
     }   
-    secondTerm="";
+    secondTerm=""; // whenever user presses an operator and second term exists, the second term contents go to first term so we empty second term
 }
 
 function clear(){
@@ -140,8 +142,25 @@ function clear(){
 }
 
 function del(){
-    console.log(firstTerm.slice(0,-1));
-    //firstTerm = 
+
+    if(firstOperator==true){
+        if(firstTerm.length > 1){
+            firstTerm = firstTerm.slice(0,-1);
+            inputBox.textContent = firstTerm;
+        }else{
+            firstTerm = 0;
+            inputBox.textContent = firstTerm;
+        }
+    }
+    else{
+        if(secondTerm.length > 1){
+            secondTerm = secondTerm.slice(0,-1);
+            inputBox.textContent = secondTerm;
+        }else{
+            secondTerm = 0;
+            inputBox.textContent = secondTerm;
+        }
+    }
 }
 
 
@@ -150,6 +169,15 @@ function decimal(){
     
     decimalButton.removeEventListener('click', decimal);
     decimalActive = true;
+
+    if(firstOperator==true){
+        firstTerm = firstTerm + ".";
+        inputBox.textContent = firstTerm;
+    }
+    else{
+        secondTerm = secondTerm + ".";
+        inputBox.textContent = secondTerm;
+    }
 }
 
 
